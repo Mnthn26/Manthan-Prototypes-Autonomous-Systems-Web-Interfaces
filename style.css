@@ -1,0 +1,222 @@
+/* ==========================================
+   MANTHAN PROTOTYPES - GLOBAL STYLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
+}
+
+:root {
+    --bg-dark: #0a0a0c;       /* Deep space black */
+    --bg-card: #121216;       /* Tech container gray */
+    --accent: #ffffff;        /* Pure white for high contrast */
+    --text-main: #e4e4e7;     /* Light silver for readability */
+    --text-muted: #a1a1aa;    /* Slate gray for secondary text */
+    --border-color: #27272a;  /* Subtle divider lines */
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    border-left: 3px solid var(--accent);
+    padding-left: 15px;
+}
+
+/* ==========================================
+   HEADER / NAVIGATION
+   ========================================== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: rgba(10, 10, 12, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--accent);
+}
+
+/* ==========================================
+   HERO SECTION
+   ========================================== */
+#hero {
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.hero-content h2 {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    border: none;
+    padding: 0;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+}
+
+.tagline {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+    color: var(--text-muted);
+}
+
+/* BUTTONS */
+.cta-btn, .youtube-btn, .linktree-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--accent);
+    color: var(--bg-dark);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.cta-btn:hover {
+    background-color: transparent;
+    color: var(--accent);
+}
+
+/* ==========================================
+   ABOUT & DESKTECH SECTIONS
+   ========================================== */
+#about, #desktech, #contact {
+    border-bottom: 1px solid var(--border-color);
+}
+
+#about p, #desktech p, #contact p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.youtube-btn {
+    background-color: #ff0000;
+    border-color: #ff0000;
+    color: #ffffff;
+}
+
+.youtube-btn:hover {
+    background-color: transparent;
+    color: #ff0000;
+}
+
+/* ==========================================
+   CURRENT BUILDS (PROJECTS)
+   ========================================== */
+#projects {
+    background-color: #0d0d11;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.project-grid {
+    margin-top: 40px;
+}
+
+.project-card.dynamic {
+    background-color: var(--bg-card);
+    border: 1px dashed #3f3f46; /* Dashed line gives an "under construction/blueprint" feel */
+    padding: 40px;
+    border-radius: 6px;
+    text-align: left;
+}
+
+.project-card.dynamic h3 {
+    font-size: 1.25rem;
+    color: var(--text-main);
+    font-family: monospace; /* Coding font for the initializing state */
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.project-card.dynamic p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* ==========================================
+   CONTACT / LINKTREE SECTION
+   ========================================== */
+.linktree-btn {
+    background-color: #25d366; /* Clean green accent for links, or customize to match your linktree */
+    border-color: #25d366;
+    color: var(--bg-dark);
+}
+
+.linktree-btn:hover {
+    background-color: transparent;
+    color: #25d366;
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--bg-dark);
+    color: #52525b;
+    font-size: 0.85rem;
+    font-family: monospace;
+}
