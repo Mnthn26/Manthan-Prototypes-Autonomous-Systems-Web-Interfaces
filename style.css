@@ -55,13 +55,6 @@ header {
     z-index: 100;
 }
 
-.logo {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
 nav ul {
     display: flex;
     list-style: none;
@@ -81,23 +74,34 @@ nav a:hover {
 }
 
 /* ==========================================
-   HERO SECTION
+   HERO SECTION & AVATAR STYLING
    ========================================== */
 #hero {
-    height: 85vh;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 20px;
+    padding: 60px 20px;
     border-bottom: 1px solid var(--border-color);
 }
 
-.hero-content h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    letter-spacing: -1px;
-    margin-bottom: 10px;
+.profile-container {
+    margin-bottom: 25px;
+}
+
+.profile-pic {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-color);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: transform 0.5s ease;
+}
+
+.profile-pic:hover {
+    transform: rotate(5deg) scale(1.05);
 }
 
 .hero-content h2 {
@@ -176,7 +180,7 @@ nav a:hover {
 
 .project-card.dynamic {
     background-color: var(--bg-card);
-    border: 1px dashed #3f3f46; /* Dashed line gives an "under construction/blueprint" feel */
+    border: 1px dashed #3f3f46;
     padding: 40px;
     border-radius: 6px;
     text-align: left;
@@ -185,21 +189,16 @@ nav a:hover {
 .project-card.dynamic h3 {
     font-size: 1.25rem;
     color: var(--text-main);
-    font-family: monospace; /* Coding font for the initializing state */
+    font-family: monospace;
     margin-bottom: 15px;
     letter-spacing: 1px;
-}
-
-.project-card.dynamic p {
-    color: var(--text-muted);
-    font-size: 1rem;
 }
 
 /* ==========================================
    CONTACT / LINKTREE SECTION
    ========================================== */
 .linktree-btn {
-    background-color: #25d366; /* Clean green accent for links, or customize to match your linktree */
+    background-color: #25d366;
     border-color: #25d366;
     color: var(--bg-dark);
 }
@@ -207,6 +206,33 @@ nav a:hover {
 .linktree-btn:hover {
     background-color: transparent;
     color: #25d366;
+}
+
+/* ==========================================
+   HIGH-TECH GLOW EFFECTS
+   ========================================== */
+.logo.glow-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-shadow: 
+        0 0 4px rgba(255, 255, 255, 0.3),
+        0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.glow-text-hero {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-shadow: 
+        0 0 7px rgba(255, 255, 255, 0.6),
+        0 0 15px rgba(255, 255, 255, 0.3),
+        0 0 21px rgba(255, 255, 255, 0.1);
 }
 
 /* ==========================================
