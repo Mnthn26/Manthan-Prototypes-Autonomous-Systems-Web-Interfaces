@@ -190,3 +190,12 @@
             tr { border-bottom: 1px solid var(--border-color); display: block; padding: 0.5rem 0; }
             td { padding: 4px 16px; border: none; }
         }
+        .footer {
+    width: 100%;
+    text-align: center;
+    padding: 24px 0;
+    font-size: 0.9rem;
+    color: #a1a1aa; /* Light gray text so it's readable on the dark background */
+    background-color: rgb(10, 10, 12);
+    margin-top: 40px; /* Gives some breathing room below your content */
+}
