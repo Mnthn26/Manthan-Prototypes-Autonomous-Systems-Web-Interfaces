@@ -199,3 +199,22 @@
     background-color: rgb(10, 10, 12);
     margin-top: 40px; /* Gives some breathing room below your content */
 }
+.back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 20px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background-color: rgb(10, 10, 12);
+    border: 1px solid #27272a; /* Subtle border so it stands out if needed */
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Changes color slightly when hovered */
+.back-btn:hover {
+    background-color: #1e1e24;
+    color: #3b82f6; /* Subtle blue highlight */
+}
