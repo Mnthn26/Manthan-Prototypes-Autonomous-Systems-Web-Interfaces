@@ -12,7 +12,7 @@
 
 :root {
     --bg-dark: #0a0a0c;       /* Deep matte black background */
-    --bg-card: #121216;       /* High contrast console container container background */
+    --bg-card: #121216;       /* High contrast console container background */
     --accent: #ffffff;        /* High brightness alert elements */
     --text-main: #e4e4e7;     /* High readability body gray */
     --text-muted: #a1a1aa;    /* Distant hardware data fields label gray */

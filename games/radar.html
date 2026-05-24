@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <!-- Script Engine remains inside the page for easy canvas/DOM interactions -->
+    <!-- Script Engine for Canvas Graphics and Web Audio API -->
     <script>
         const logBox = document.getElementById('termLog');
         function logToTerminal(prefix, message) {
@@ -150,7 +150,7 @@
             const cY = canvas.height - 20;
             const maxRadius = Math.min(canvas.width / 2 - 20, canvas.height - 40);
 
-            // Draw Radar Arcs
+            // Draw Radar Arcs (Grid rings)
             ctx.strokeStyle = '#1a1a22';
             ctx.lineWidth = 1;
             for (let r = 1; r <= 4; r++) {
@@ -191,14 +191,17 @@
             ctx.lineTo(cX + maxRadius * Math.cos(Math.PI + sweepRad), cY + maxRadius * Math.sin(Math.PI + sweepRad));
             ctx.stroke();
 
-            // Calculate current slider target position mapping coordinates
+            // --- CORRECTED TARGET COORDINATE MAPPING LOOP ---
             const targetAngle = parseFloat(angleSlider.value);
             const targetDistance = parseFloat(distSlider.value);
             const targetRadius = (targetDistance / 200) * maxRadius;
-            const targetRad = (targetAngle * Math.PI) / 180;
+            
+            // Map 0 degrees to the far-left grid quadrant for standard horizontal alignment
+            const targetRad = ((180 - targetAngle) * Math.PI) / 180;
 
-            const tX = cX + targetRadius * Math.cos(Math.PI + targetRad);
-            const tY = cY + targetRadius * Math.sin(Math.PI + targetRad);
+            const tX = cX + targetRadius * Math.cos(targetRad);
+            const tY = cY - targetRadius * Math.sin(targetRad);
+            // ------------------------------------------------
 
             // If sweep line hits intersection point angle
             if (Math.abs(sweepAngle - targetAngle) < 1.2) {
