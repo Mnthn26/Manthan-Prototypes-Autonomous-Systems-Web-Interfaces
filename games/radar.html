@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeskTech Labs // Tactical Radar Interface</title>
+    <!-- Linking the clean separate external stylesheet -->
+    <link rel="stylesheet" href="radar.css">
+</head>
+<body>
+
+    <!-- Back Navigation Link to Main Hub -->
+    <a href="../index.html" class="back-nav">← RETURN TO HUB</a>
+
+    <div class="radar-panel-container">
+        <div class="panel-header">
+            <h1>[ Lab System Active // Radar Telemetry ]</h1>
+            <p>Simulating hardware processing tracking routines from an ultrasonic distance module.</p>
+        </div>
+
+        <div class="workbench-grid">
+            
+            <!-- Left Side Config Panel Controls -->
+            <div class="workbench-panel">
+                <div>
+                    <div class="section-title">
+                        <span>Target Calibration</span>
+                        <span class="sweep-indicator">● Sweeping</span>
+                    </div>
+                    
+                    <div class="slider-group">
+                        <label><span>Simulated Target Distance</span><span id="dist-val">120 cm</span></label>
+                        <input type="range" min="10" max="200" value="120" class="workbench-slider" id="distance-slider">
+                    </div>
+
+                    <div class="slider-group">
+                        <label><span>Simulated Target Angle</span><span id="angle-val">90°</span></label>
+                        <input type="range" min="15" max="165" value="90" class="workbench-slider" id="angle-slider">
+                    </div>
+                </div>
+
+                <div class="telemetry-readout">
+                    <div class="readout-item">MCU Core Status: <span>READY</span></div>
+                    <div class="readout-item">Virtual Servo Speed: <span>15 RPM</span></div>
+                    <div class="readout-item">Sensor Array ID: <span>HC-SR04</span></div>
+                    <div class="readout-item">Audio Node State: <span>ONLINE</span></div>
+                </div>
+            </div>
+
+            <!-- Right Side Graphic Display Scope -->
+            <div class="workbench-panel">
+                <div class="section-title">
+                    <span>Tactical Command UI</span>
+                    <span>180° Sweep View</span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="radarCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Full-Width Scrolling Terminal Output Module Feed -->
+            <div class="terminal-log" id="termLog">
+                <div class="terminal-line"><span>[SYS]</span> Booting Independent Radar Display Console...</div>
+                <div class="terminal-line"><span>[SYS]</span> Audio engine initialized. Interact with sliders to unmute.</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script Engine remains inside the page for easy canvas/DOM interactions -->
+    <script>
+        const logBox = document.getElementById('termLog');
+        function logToTerminal(prefix, message) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `<span>[${prefix}]</span> ${message}`;
+            logBox.appendChild(line);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        const canvas = document.getElementById('radarCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const distSlider = document.getElementById('distance-slider');
+        const angleSlider = document.getElementById('angle-slider');
+        const distVal = document.getElementById('dist-val');
+        const angleVal = document.getElementById('angle-val');
+
+        let sweepAngle = 15;
+        let sweepDirection = 1;
+        let lastBeepTime = 0;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playRadarBeep() {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.type = 'sine'; 
+                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); 
+
+                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime); 
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12); 
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.12);
+            } catch (e) {
+                console.log("Audio play blocked:", e);
+            }
+        }
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        distSlider.addEventListener('input', () => {
+            initAudio();
+            distVal.textContent = `${distSlider.value} cm`;
+        });
+        angleSlider.addEventListener('input', () => {
+            initAudio();
+            angleVal.textContent = `${angleSlider.value}°`;
+        });
+
+        distSlider.addEventListener('change', () => logToTerminal('RADAR', `Target distance calibration updated: ${distSlider.value}cm`));
+        angleSlider.addEventListener('change', () => logToTerminal('SERVO', `Alignment fixed to center path vector: ${angleSlider.value}°`));
+
+        function drawRadar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const cX = canvas.width / 2;
+            const cY = canvas.height - 20;
+            const maxRadius = Math.min(canvas.width / 2 - 20, canvas.height - 40);
+
+            // Draw Radar Arcs
+            ctx.strokeStyle = '#1a1a22';
+            ctx.lineWidth = 1;
+            for (let r = 1; r <= 4; r++) {
+                ctx.beginPath();
+                ctx.arc(cX, cY, (maxRadius / 4) * r, Math.PI, 0);
+                ctx.stroke();
+            }
+
+            // Draw Grid Angle Lines
+            for (let angle = 30; angle <= 150; angle += 30) {
+                const rad = (angle * Math.PI) / 180;
+                ctx.beginPath();
+                ctx.moveTo(cX, cY);
+                ctx.lineTo(cX - maxRadius * Math.cos(rad), cY - maxRadius * Math.sin(rad));
+                ctx.stroke();
+            }
+
+            // Animate sweeping line
+            sweepAngle += 0.8 * sweepDirection;
+            if (sweepAngle >= 165 || sweepAngle <= 15) {
+                sweepDirection *= -1;
+            }
+            const sweepRad = (sweepAngle * Math.PI) / 180;
+
+            // Draw Sweep Beam trail
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+            ctx.beginPath();
+            ctx.moveTo(cX, cY);
+            ctx.arc(cX, cY, maxRadius, Math.PI + sweepRad - (0.1 * sweepDirection), Math.PI + sweepRad);
+            ctx.lineTo(cX, cY);
+            ctx.fill();
+
+            // Main sharp sweep line vector tracking
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cX, cY);
+            ctx.lineTo(cX + maxRadius * Math.cos(Math.PI + sweepRad), cY + maxRadius * Math.sin(Math.PI + sweepRad));
+            ctx.stroke();
+
+            // Calculate current slider target position mapping coordinates
+            const targetAngle = parseFloat(angleSlider.value);
+            const targetDistance = parseFloat(distSlider.value);
+            const targetRadius = (targetDistance / 200) * maxRadius;
+            const targetRad = (targetAngle * Math.PI) / 180;
+
+            const tX = cX + targetRadius * Math.cos(Math.PI + targetRad);
+            const tY = cY + targetRadius * Math.sin(Math.PI + targetRad);
+
+            // If sweep line hits intersection point angle
+            if (Math.abs(sweepAngle - targetAngle) < 1.2) {
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = '#ffffff';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(tX, tY, 6, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                
+                const now = performance.now();
+                if (now - lastBeepTime > 300) { 
+                    playRadarBeep();
+                    lastBeepTime = now;
+                }
+
+                if(Math.random() < 0.05) {
+                    logToTerminal('ECHO', `Telemetry Match -> Intersect Angle: ${targetAngle}° | Range: ${targetDistance}cm`);
+                }
+            } else {
+                ctx.fillStyle = '#3f3f46';
+                ctx.beginPath();
+                ctx.arc(tX, tY, 4, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+
+            requestAnimationFrame(drawRadar);
+        }
+
+        window.addEventListener('click', initAudio);
+        drawRadar();
+    </script>
+</body>
+</html>
